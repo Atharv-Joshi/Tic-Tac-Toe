@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tic_tac_toe/screens/game_screen.dart';
+import 'package:tic_tac_toe/screens/choose_game_mode.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GameScreen(),
+      home: ChooseGameMode(),
     );
   }
 }
