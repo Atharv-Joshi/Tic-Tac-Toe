@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/helpers/function_calls.dart';
 import 'package:tic_tac_toe/models/player.dart';
 import 'package:tic_tac_toe/utils/matrix_utils.dart';
 
-class GameScreen extends StatefulWidget {
-  const GameScreen({Key? key}) : super(key: key);
+class LTPGameScreen extends StatefulWidget {
+  final List<List<String>> fMatrix;
+  const LTPGameScreen({Key? key, required this.fMatrix}) : super(key: key);
 
   @override
-  State<GameScreen> createState() => _GameScreenState();
+  State<LTPGameScreen> createState() => _LTPGameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
-  final countSize = 3;
+class _LTPGameScreenState extends State<LTPGameScreen> {
   final double buttonSize = 92;
   List<List<String>>? matrix;
   String lastMove = Player.none;
+  FunctionCalls functionCalls = FunctionCalls();
 
   @override
   void initState() {
     super.initState();
-    createInitialMatrix();
+    matrix = widget.fMatrix;
   }
-
-  createInitialMatrix() => matrix = List.generate(countSize, (_) => List.generate(countSize, (_) => Player.none));
 
   Widget buildRow(int x){
     final values = matrix![x];
@@ -83,7 +83,7 @@ class _GameScreenState extends State<GameScreen> {
   bool isWinner(int x, int y) {
     var col = 0, row = 0, diag = 0, rdiag = 0;
     final player = matrix![x][y];
-    final n = countSize;
+    final n = functionCalls.countSize;
 
     for (int i = 0; i < n; i++) {
       if (matrix![x][i] == player) col++;
@@ -105,7 +105,7 @@ class _GameScreenState extends State<GameScreen> {
         ElevatedButton(
           onPressed: () {
             setState(() {
-              createInitialMatrix();
+              matrix = functionCalls.createLTPInitialMatrix();
             });
             Navigator.of(context).pop();
           },
@@ -120,8 +120,8 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       backgroundColor: getBackgroundColor().withOpacity(0.6),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: Utils.modelBuilder(matrix!, (x, value) => buildRow(x))
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: Utils.modelBuilder(matrix!, (x, value) => buildRow(x))
       ),
     );
   }
