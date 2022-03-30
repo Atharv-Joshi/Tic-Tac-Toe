@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/services.dart';
 
+import '../../game.dart';
 import 'initiate_stream_screen.dart';
 
 class SelectLobby extends StatelessWidget {
@@ -32,9 +33,9 @@ class SelectLobby extends StatelessWidget {
                     itemBuilder: (context, index){
                       return ElevatedButton(
                           onPressed: () async {
-                            List<List<String>> matrix = await dataBaseService.getMatrixObject(idList[index]);
+                            Game game = await dataBaseService.getMatrixObject(idList[index]);
                             Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) => InitiateStreamScreen(fMatrix: matrix, uid: idList[index])));
+                                MaterialPageRoute(builder: (context) => InitiateStreamScreen(fMatrix: game.matrix, uid: idList[index])));
                           },
                           child: Text(idList[index]));
                     }),

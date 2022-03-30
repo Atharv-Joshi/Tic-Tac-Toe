@@ -19,7 +19,6 @@ class FunctionCalls{
         countSize, (_) => List.generate(countSize, (_) => Player.none));
     // firebase matrix
     final DocumentReference response = await dataBaseService.addInitialMatrix();
-
     return {
       'matrix' : matrix,
       'uid' : response.id
