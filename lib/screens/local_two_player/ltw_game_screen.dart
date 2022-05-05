@@ -47,6 +47,11 @@ class _LTPGameScreenState extends State<LTPGameScreen> {
     return getFieldColor(thisMove);
   }
 
+  String getCurrentMove(){
+    String thisMove = lastMove == Player.O ? Player.X : Player.O;
+    return thisMove;
+  }
+
   void selectField(String value, int x, int y){
     if(value == Player.none){
       String newValue = lastMove == Player.O ? Player.X : Player.O;
@@ -120,8 +125,24 @@ class _LTPGameScreenState extends State<LTPGameScreen> {
     return Scaffold(
       backgroundColor: getBackgroundColor().withOpacity(0.6),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: Utils.modelBuilder(matrix!, (x, value) => buildRow(x))
+        mainAxisAlignment: MainAxisAlignment.end ,
+        children: [
+          Column(
+              children: Utils.modelBuilder(matrix!, (x, value) => buildRow(x))
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 200, bottom: 30),
+            child: Text(
+                'Turn of ${getCurrentMove()}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

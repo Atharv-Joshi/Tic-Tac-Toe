@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tic_tac_toe/models/game.dart';
 import 'package:tic_tac_toe/screens/online_two_player/otp_game_screen.dart';
-import 'package:tic_tac_toe/services.dart';
+import 'package:tic_tac_toe/helpers/services.dart';
 
 class InitiateStreamScreen extends StatelessWidget {
   final List<List<String>> fMatrix;
@@ -10,10 +11,11 @@ class InitiateStreamScreen extends StatelessWidget {
   final DataBaseService dataBaseService = DataBaseService();
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<List<String>>>.value(
+    return StreamProvider<Game>.value(
         value: dataBaseService.getMatrixStream(uid),
-        initialData: const [],
-        child: OTPGameScreen(fMatrix: fMatrix, uid: uid,),
+        initialData: Game(matrix: [], currentMove: '', winner: ''),
+        child: OTPGameScreen(matrix: fMatrix, uid: uid,),
+      // catchError: (_,__) => Game(matrix: [], currentMove: '', winner: Player.value == 'O' ? 'X' : 'O'),
     );
   }
 }

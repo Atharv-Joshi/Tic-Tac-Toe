@@ -2,7 +2,8 @@ class MatrixHelper {
 
   // Creates an String matrix from a dynamic map.
   static List<List<String>> matrixFromMap(dynamic internalHashmap) {
-    List rowLevelMapEntries = internalHashmap.entries.toList();
+    dynamic firebaseMatrix = internalHashmap["matrix"];
+    List rowLevelMapEntries = firebaseMatrix.entries.toList();
     List<List<String>> matrix = [];
     int totalRows = rowLevelMapEntries.length;
     for(int i = 0 ; i < totalRows; i++){

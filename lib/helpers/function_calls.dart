@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/player.dart';
-import '../services.dart';
+import 'services.dart';
 
 class FunctionCalls{
 
@@ -19,7 +19,6 @@ class FunctionCalls{
         countSize, (_) => List.generate(countSize, (_) => Player.none));
     // firebase matrix
     final DocumentReference response = await dataBaseService.addInitialMatrix();
-
     return {
       'matrix' : matrix,
       'uid' : response.id

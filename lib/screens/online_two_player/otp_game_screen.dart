@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tic_tac_toe/models/game.dart';
 import 'package:tic_tac_toe/helpers/function_calls.dart';
 import 'package:tic_tac_toe/models/player.dart';
 import 'package:tic_tac_toe/screens/choose_game_mode.dart';
-import 'package:tic_tac_toe/services.dart';
+import 'package:tic_tac_toe/helpers/services.dart';
 import 'package:tic_tac_toe/utils/matrix_utils.dart';
 
 class OTPGameScreen extends StatefulWidget {
-  final List<List<String>> fMatrix;
+  final List<List<String>> matrix;
   final String uid;
-  const OTPGameScreen({Key? key, required this.fMatrix, required this.uid}) : super(key: key);
+  const OTPGameScreen({Key? key, required this.matrix, required this.uid}) : super(key: key);
 
   @override
   State<OTPGameScreen> createState() => _OTPGameScreenState();
@@ -20,14 +21,18 @@ class _OTPGameScreenState extends State<OTPGameScreen> {
   String lastMove = Player.none;
   String? uid;
   List<List<String>>? matrix;
+  Game? game;
   List<List<String>>? backupMatrix;
+  String? currentMove;
+  final String playerA = Player.value;
+  final String playerB = Player.value == 'O' ? 'X' : 'O';
 
   DataBaseService dataBaseService = DataBaseService();
 
   @override
   void initState() {
     super.initState();
-    matrix = widget.fMatrix;
+    matrix = widget.matrix;
     uid = widget.uid;
   }
 
@@ -50,9 +55,8 @@ class _OTPGameScreenState extends State<OTPGameScreen> {
     }
   }
 
-  Color getBackgroundColor(){
-    String thisMove = lastMove == Player.O ? Player.X : Player.O;
-    return getFieldColor(thisMove);
+  Color getBackgroundColor(String currentMove){
+    return getFieldColor(currentMove);
   }
 
   Widget buildField(x,y){
@@ -65,21 +69,22 @@ class _OTPGameScreenState extends State<OTPGameScreen> {
           primary: getFieldColor(value),
         ),
         child: Text(value, style: const TextStyle(fontSize: 32, color: Colors.white)),
-        onPressed: () => playerOneMove(value,x,y),
+        onPressed: currentMove == playerA ? () => playerOneMove(value,x,y) : null,
       ),
     );
   }
 
   void playerOneMove(String value, int x, int y) async {
     if(value == Player.none){
-      final updatedMatrix = await dataBaseService.updateMatrixCell(uid!, x.toString(), y.toString(), Player.value);
+      final updatedMatrix = await dataBaseService.updateFireBaseMatrix(uid!, x.toString(), y.toString(), Player.value, Player.value == 'X' ? 'O' : 'X');
       setState(() {
         lastMove = Player.value;
         matrix![x][y] = Player.value;
         backupMatrix = matrix;
       });
       if(isWinner(x, y)){
-        showEndDialog('Player ${Player.value} won!');
+        // dataBaseService.updateWinningStatus(winningPlayer: winningPlayer, uid: uid)
+        showEndDialog('You won!!!');
       }else if(isEnd()){
         showEndDialog('Undecided Game');
       }
@@ -98,7 +103,10 @@ class _OTPGameScreenState extends State<OTPGameScreen> {
     // }
   }
 
-  getChangedElementDetails(List<List<String>> newMatrix){
+  findPlayer2Move(List<List<String>> newMatrix){
+    // if(game!.winner != ''){
+    //   showEndDialog('Player ${game!.winner} won!');
+    // }
     for(int i = 0; i < 3; i++){
       for(int j = 0; j < 3; j++){
         if(newMatrix[i][j] != matrix![i][j]){
@@ -137,7 +145,7 @@ class _OTPGameScreenState extends State<OTPGameScreen> {
   content: const Text('Press to Restart the Game'),
   actions: [
     ElevatedButton(
-      onPressed: () {
+      onPressed:  () {
         Navigator.pop(context);
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>
             ChooseGameMode()));
@@ -151,12 +159,30 @@ class _OTPGameScreenState extends State<OTPGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    matrix = Provider.of<List<List<String>>>(context);
+    game = Provider.of<Game>(context);
+    matrix = game?.matrix;
+    currentMove = game?.currentMove;
     return Scaffold(
-      backgroundColor: getBackgroundColor().withOpacity(0.6),
+      backgroundColor: getBackgroundColor(currentMove!).withOpacity(0.6),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: Utils.modelBuilder(matrix!, (x, value) => buildRow(x))
+        mainAxisAlignment: MainAxisAlignment.end ,
+        children: [
+          Column(
+              children: Utils.modelBuilder(matrix!, (x, value) => buildRow(x))
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 200, bottom: 30),
+            child: Text(
+              'Turn of $currentMove',
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
