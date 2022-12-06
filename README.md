@@ -19,3 +19,9 @@ Home Screen | Gameplay | Multiplayer
 
 ### Apk :
 [Download Link](https://drive.google.com/file/d/13pcit7r_W_8qy_Uc_Z91C9knc3CaHJh3/view?usp=sharing)
+
+### Things to do :
+- Improve Multiplayer Experience
+  - Lobby should have a name instead of Firebase document Id.
+- Add more details on game screen to help the player
+- Improving the UI
