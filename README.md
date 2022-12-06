@@ -1,16 +1,18 @@
-# tic_tac_toe
+# TIC TAC TOE
 
-A new Flutter project.
+### Game Modes :
+- Play Against Computer
+- Local Two Player
+- Online Two Player
 
-## Getting Started
+#### Tech Stack used :
+- Flutter (Frontend)
+- Firebase (Backend)
 
-This project is a starting point for a Flutter application.
+APP Images :
 
-A few resources to get you started if this is your first Flutter project:
+Home Screen | Gameplay | Multiplayer
+:---------: | :-------: | :---------: |
+![home](https://user-images.githubusercontent.com/53505850/205853552-bd3051b2-2585-470f-a80c-8af921e81dac.png) | ![game won](https://user-images.githubusercontent.com/53505850/205853589-c97a7b5b-67c2-43e4-b475-77499452767b.png) | ![multiplayer](https://user-images.githubusercontent.com/53505850/205853607-07fc5c2d-07e5-4862-8636-10d1c89c5b7b.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
