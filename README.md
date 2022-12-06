@@ -22,6 +22,6 @@ Home Screen | Gameplay | Multiplayer
 
 ### Things to do :
 - Improve Multiplayer Experience
-  - Lobby should have a name instead of Firebase document Id.
+  - Invite Links instead of an lobby to allow easy joining to a game. 
 - Add more details on game screen to help the player
 - Improving the UI
